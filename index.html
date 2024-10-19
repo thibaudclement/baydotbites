@@ -2,18 +2,83 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>BayDotBites</title>
+    <title>SF Restaurants Visualization</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="container">
-      <div id="controls">
-      </div>
-      <div id="main-content">
-        <div id="map-container">
-          <!-- Map will be injected here -->
+        <div id="controls">
+            <h2>Filters</h2>
+            <!-- Ratings Checkboxes -->
+            <div class="filter-group">
+                <label>Average Rating:</label><br>
+                <input type="checkbox" name="rating" value="0-0.99" checked> 0.0 - 0.99<br>
+                <input type="checkbox" name="rating" value="1-1.99" checked> 1.0 - 1.99<br>
+                <input type="checkbox" name="rating" value="2-2.99" checked> 2.0 - 2.99<br>
+                <input type="checkbox" name="rating" value="3-3.99" checked> 3.0 - 3.99<br>
+                <input type="checkbox" name="rating" value="4-5" checked> 4.0 - 5.0<br>
+            </div>
+            <!-- Reviews Range Slider -->
+            <div class="filter-group">
+                <label>Number of Reviews:</label><br>
+                <input type="range" id="reviewsMin" min="0" max="1000" step="1" value="0">
+                <input type="range" id="reviewsMax" min="0" max="1000" step="1" value="1000">
+                <span id="reviewsValue">0 - 1000</span>
+            </div>
+            <!-- Price Checkboxes -->
+            <div class="filter-group">
+                <label>Price Level:</label><br>
+                <input type="checkbox" name="price" value="$" checked> $<br>
+                <input type="checkbox" name="price" value="$$" checked> $$<br>
+                <input type="checkbox" name="price" value="$$$" checked> $$$<br>
+                <input type="checkbox" name="price" value="$$$$" checked> $$$$<br>
+                <input type="checkbox" name="price" value="N/A" checked> N/A<br>
+            </div>
+            <!-- Search Box -->
+            <div class="filter-group">
+                <label for="searchBox">Search:</label><br>
+                <input type="text" id="searchBox" placeholder="Name, address, or category">
+            </div>
+            <!-- Transactions Checkboxes -->
+            <div class="filter-group">
+                <label>Transactions:</label><br>
+                <input type="checkbox" name="transaction" value="delivery" checked> Delivery<br>
+                <input type="checkbox" name="transaction" value="pickup" checked> Pickup<br>
+                <input type="checkbox" name="transaction" value="restaurant_reservation" checked> Reservation<br>
+            </div>
+            <!-- Open/Closed Status -->
+            <div class="filter-group">
+                <label>Status:</label><br>
+                <input type="radio" name="status" value="all" checked> All<br>
+                <input type="radio" name="status" value="open"> Open<br>
+                <input type="radio" name="status" value="closed"> Closed<br>
+            </div>
+            <!-- Radii Sliders -->
+            <div class="filter-group">
+                <label>Circle A Radius:</label><br>
+                <input type="range" id="radiusASlider" min="10" max="500" step="10" value="100">
+                <span id="radiusAValue">100</span>
+            </div>
+            <div class="filter-group">
+                <label>Circle B Radius:</label><br>
+                <input type="range" id="radiusBSlider" min="10" max="500" step="10" value="100">
+                <span id="radiusBValue">100</span>
+            </div>
         </div>
-      </div>
+        <div id="main-content">
+            <div id="map-container">
+                <!-- Map will be injected here -->
+            </div>
+            <div id="results">
+                <h2 id="resultsHeading">Results</h2>
+                <ul id="resultsList"></ul>
+            </div>
+        </div>
+    </div>
+    <!-- Tooltip -->
+    <div id="tooltip" class="hidden">
+        <p><strong id="tooltipName"></strong></p>
+        <p id="tooltipInfo"></p>
     </div>
     <!-- Include D3.js -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
