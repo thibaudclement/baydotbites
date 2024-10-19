@@ -25,7 +25,7 @@ d3.csv(
 
 function init() {
   // Set up projection
-  const longitudeRange = [-122.50685, -121.781739849809];
+  const longitudeRange = [-121.781739849809, -122.50685];
   const latitudeRange = [37.22070801115405, 37.820673];
   const mapFrameGeoJSON = {
     type: "Feature",
@@ -83,4 +83,230 @@ function init() {
     .on("mouseover", showTooltip)
     .on("mousemove", moveTooltip)
     .on("mouseout", hideTooltip);
+
+  // Add draggable circles A and B
+  addDraggableCircles();
+
+  // Initialize UI controls
+  initControls();
+
+  // Initial update
+  updateVisualization();
+}
+
+function addDraggableCircles() {
+  dragBehaviorA = d3.drag().on("drag", draggedA);
+  dragBehaviorB = d3.drag().on("drag", draggedB);
+
+  circleA = svg
+    .append("circle")
+    .attr("class", "circleA")
+    .attr("cx", radiusA.x)
+    .attr("cy", radiusA.y)
+    .attr("r", radiusA.r)
+    .attr("fill", "rgba(0, 0, 255, 0.1)") // Light blue fill with 10% opacity
+    .attr("stroke", "blue")
+    .call(dragBehaviorA);
+
+  circleB = svg
+    .append("circle")
+    .attr("class", "circleB")
+    .attr("cx", radiusB.x)
+    .attr("cy", radiusB.y)
+    .attr("r", radiusB.r)
+    .attr("fill", "rgba(0, 128, 0, 0.1)") // Light green fill with 10% opacity
+    .attr("stroke", "green")
+    .call(dragBehaviorB);
+}
+
+function draggedA(event) {
+  radiusA.x = event.x;
+  radiusA.y = event.y;
+  circleA.attr("cx", radiusA.x).attr("cy", radiusA.y);
+  updateVisualization();
+}
+
+function draggedB(event) {
+  radiusB.x = event.x;
+  radiusB.y = event.y;
+  circleB.attr("cx", radiusB.x).attr("cy", radiusB.y);
+  updateVisualization();
+}
+
+function initControls() {
+  // Ratings checkboxes
+  d3.selectAll("input[name='rating']").on("change", updateVisualization);
+
+  // Reviews range sliders
+  d3.select("#reviewsMin").on("input", updateVisualization);
+  d3.select("#reviewsMax").on("input", updateVisualization);
+
+  // Price checkboxes
+  d3.selectAll("input[name='price']").on("change", updateVisualization);
+
+  // Search box
+  d3.select("#searchBox").on("input", updateVisualization);
+
+  // Transactions checkboxes
+  d3.selectAll("input[name='transaction']").on("change", updateVisualization);
+
+  // Status radio buttons
+  d3.selectAll("input[name='status']").on("change", updateVisualization);
+
+  // Radii sliders
+  d3.select("#radiusASlider").on("input", function () {
+    radiusA.r = +this.value;
+    d3.select("#radiusAValue").text(this.value);
+    circleA.attr("r", radiusA.r);
+    updateVisualization();
+  });
+
+  d3.select("#radiusBSlider").on("input", function () {
+    radiusB.r = +this.value;
+    d3.select("#radiusBValue").text(this.value);
+    circleB.attr("r", radiusB.r);
+    updateVisualization();
+  });
+
+  // Set initial radius values
+  d3.select("#radiusAValue").text(radiusA.r);
+  d3.select("#radiusBValue").text(radiusB.r);
+}
+
+function updateVisualization() {
+  // Get filter values
+  const ratingValues = d3
+    .selectAll("input[name='rating']:checked")
+    .nodes()
+    .map((d) => d.value);
+  const reviewsMin = parseInt(d3.select("#reviewsMin").property("value"));
+  const reviewsMax = parseInt(d3.select("#reviewsMax").property("value"));
+  const priceValues = d3
+    .selectAll("input[name='price']:checked")
+    .nodes()
+    .map((d) => d.value);
+  const searchTerm = d3.select("#searchBox").property("value").toLowerCase();
+  const transactionValues = d3
+    .selectAll("input[name='transaction']:checked")
+    .nodes()
+    .map((d) => d.value);
+  const statusValue = d3.select("input[name='status']:checked").property("value");
+
+  // Update display of reviews range
+  d3.select("#reviewsValue").text(`${reviewsMin} - ${reviewsMax}`);
+
+  // Filter data
+  filteredData = data.filter((d) => {
+    // Rating filter
+    let ratingRangeMatch = false;
+    for (let range of ratingValues) {
+      const [min, max] = range.split("-").map(parseFloat);
+      if (d.rating !== null && d.rating >= min && d.rating <= max) {
+        ratingRangeMatch = true;
+        break;
+      }
+    }
+    if (!ratingRangeMatch) return false;
+
+    // Reviews filter
+    if (
+      d.review_count === null ||
+      d.review_count < reviewsMin ||
+      d.review_count > reviewsMax
+    ) {
+      return false;
+    }
+
+    // Price filter
+    if (!priceValues.includes(d.price)) {
+      return false;
+    }
+
+    // Search filter (name, address, categories)
+    const searchFields = [d.name, d.address, d.categories].join(" ").toLowerCase();
+    if (!searchFields.includes(searchTerm)) {
+      return false;
+    }
+
+    // Transactions filter
+    if (transactionValues.length > 0) {
+      if (d.transactions) {
+        const transactionList = d.transactions.split(", ");
+        const hasTransaction = transactionValues.some((val) =>
+          transactionList.includes(val)
+        );
+        if (!hasTransaction) {
+          return false;
+        }
+      } else {
+        return false; // Exclude if no transactions data
+      }
+    }
+
+    // Status filter
+    if (statusValue !== "all") {
+      if (
+        (statusValue === "open" && d.is_closed) ||
+        (statusValue === "closed" && !d.is_closed)
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+
+  // Update circles
+  circlesGroup
+    .selectAll("circle.restaurant")
+    .attr("fill", (d) => {
+      const inFilteredData = filteredData.includes(d);
+      const inCirclesIntersection = isInCirclesIntersection(d);
+      if (inFilteredData && inCirclesIntersection) {
+        return "firebrick";
+      } else {
+        return "gray";
+      }
+    });
+
+  // Get all results that are in the circles' intersection
+  const allResults = filteredData.filter(isInCirclesIntersection);
+
+  // Update results heading with the count
+  d3.select("#resultsHeading").text(`${allResults.length} Results`);
+
+  // Update results list
+  const resultsList = d3.select("#resultsList").html("");
+  allResults.forEach((d) => {
+    resultsList.append("li").text(`${d.name} - ${d.address}`);
+  });
+}
+
+function isInCirclesIntersection(d) {
+  const [x, y] = projection([d.longitude, d.latitude]);
+  const distA = Math.hypot(x - radiusA.x, y - radiusA.y);
+  const distB = Math.hypot(x - radiusB.x, y - radiusB.y);
+  return distA <= radiusA.r && distB <= radiusB.r;
+}
+
+function showTooltip(event, d) {
+  const tooltip = d3.select("#tooltip");
+  tooltip.select("#tooltipName").text(d.name);
+  tooltip
+    .select("#tooltipInfo")
+    .html(
+      `Rating: ${d.rating}<br>Reviews: ${d.review_count}<br>Price: ${d.price}`
+    );
+  tooltip.classed("hidden", false);
+}
+
+function moveTooltip(event) {
+  const tooltip = d3.select("#tooltip");
+  tooltip
+    .style("left", event.pageX + 15 + "px")
+    .style("top", event.pageY + 15 + "px");
+}
+
+function hideTooltip() {
+  d3.select("#tooltip").classed("hidden", true);
 }
