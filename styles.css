@@ -7,7 +7,7 @@ body {
 #container {
   display: flex;
   flex-direction: row;
-  height: 100vh; /* Full viewport height */
+  height: 100vh;
 }
 
 #controls {
@@ -30,8 +30,6 @@ body {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  /* Removed align-items to prevent centering */
-  /* align-items: center; */
   overflow: auto;
   margin: 0;
   padding: 0;
@@ -39,8 +37,8 @@ body {
 
 #map-container {
   position: relative;
-  width: 948px; /* Map image width */
-  height: 844px; /* Map image height */
+  width: 948px;
+  height: 844px;
 }
 
 svg {
@@ -53,9 +51,7 @@ svg {
   padding: 20px;
   border-top: 1px solid #ccc;
   width: 100%;
-  max-width: 948px; /* Match the map container width */
-  /* Removed margin to prevent centering */
-  /* margin: 0 auto; */
+  max-width: 948px;
 }
 
 #results h2 {

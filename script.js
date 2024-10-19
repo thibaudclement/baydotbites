@@ -3,8 +3,8 @@ let data = [];
 let filteredData = [];
 let svg;
 let projection;
-const mapWidth = 948; // Map image width
-const mapHeight = 844; // Map image height
+const mapWidth = 948;
+const mapHeight = 844;
 let radiusA, radiusB;
 let dragBehaviorA, dragBehaviorB;
 let circleA, circleB;
@@ -49,8 +49,8 @@ function init() {
   const stanfordPos = projection(stanfordCoords);
 
   // Initialize radiusA and radiusB
-  radiusA = { x: sanFranciscoPos[0], y: sanFranciscoPos[1], r: 100 };
-  radiusB = { x: stanfordPos[0], y: stanfordPos[1], r: 100 };
+  radiusA = { x: sanFranciscoPos[0], y: sanFranciscoPos[1], r: 300 };
+  radiusB = { x: stanfordPos[0], y: stanfordPos[1], r: 300 };
 
   // Set up SVG with fixed width and height
   svg = d3
@@ -80,6 +80,7 @@ function init() {
     .attr("cy", (d) => projection([d.longitude, d.latitude])[1])
     .attr("r", 3)
     .attr("fill", "gray")
+    .attr("opacity", 0.3)
     .on("mouseover", showTooltip)
     .on("mousemove", moveTooltip)
     .on("mouseout", hideTooltip);
@@ -104,7 +105,7 @@ function addDraggableCircles() {
     .attr("cx", radiusA.x)
     .attr("cy", radiusA.y)
     .attr("r", radiusA.r)
-    .attr("fill", "rgba(0, 0, 255, 0.1)") // Light blue fill with 10% opacity
+    .attr("fill", "rgba(0, 0, 255, 0.1)")
     .attr("stroke", "blue")
     .call(dragBehaviorA);
 
@@ -114,7 +115,7 @@ function addDraggableCircles() {
     .attr("cx", radiusB.x)
     .attr("cy", radiusB.y)
     .attr("r", radiusB.r)
-    .attr("fill", "rgba(0, 128, 0, 0.1)") // Light green fill with 10% opacity
+    .attr("fill", "rgba(0, 128, 0, 0.1)")
     .attr("stroke", "green")
     .call(dragBehaviorB);
 }
