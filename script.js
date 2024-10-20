@@ -88,6 +88,9 @@ function init() {
   // Add draggable circles A and B
   addDraggableCircles();
 
+  // Bring restaurant circles to the front
+  circlesGroup.raise();
+
   // Initialize UI controls
   initControls();
 
@@ -105,8 +108,9 @@ function addDraggableCircles() {
     .attr("cx", radiusA.x)
     .attr("cy", radiusA.y)
     .attr("r", radiusA.r)
-    .attr("fill", "rgba(0, 0, 255, 0.1)")
-    .attr("stroke", "blue")
+    .attr("fill", "#f4cd6e")
+    .attr("fill-opacity", 0.05)
+    .attr("stroke", "#f4cd6e")
     .call(dragBehaviorA);
 
   circleB = svg
@@ -115,8 +119,9 @@ function addDraggableCircles() {
     .attr("cx", radiusB.x)
     .attr("cy", radiusB.y)
     .attr("r", radiusB.r)
-    .attr("fill", "rgba(0, 128, 0, 0.1)")
-    .attr("stroke", "green")
+    .attr("fill", "#f4cd6e")
+    .attr("fill-opacity", 0.05)
+    .attr("stroke", "#f4cd6e")
     .call(dragBehaviorB);
 }
 
