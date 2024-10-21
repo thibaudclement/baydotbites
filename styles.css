@@ -82,7 +82,7 @@ svg {
 }
 
 #results {
-  padding: 20px;
+  padding: 30px;
   border-top: 1px solid #c6d8e0;
   width: 100%;
 }
@@ -92,12 +92,20 @@ svg {
 }
 
 #resultsList {
+  width: 948px;
   list-style-type: none;
   padding: 0;
 }
 
 #resultsList li {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  background-color: #e3ebf0;
+  border-radius: 20px;
+}
+
+#resultsList li:hover {
+  background-color: #c6d8e0;
 }
 
 /* Tooltip styling */

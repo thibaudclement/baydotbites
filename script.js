@@ -279,13 +279,13 @@ function updateVisualization() {
   const allResults = filteredData.filter(isInCirclesIntersection);
 
   // Update results heading with the count
-  d3.select("#resultsHeading").text(`${allResults.length} Results`);
+  d3.select("#resultsHeading").text(`${allResults.length} Restaurants`);
 
   // Update results list
   const resultsList = d3.select("#resultsList").html("");
-  allResults.forEach((d) => {
-    resultsList.append("li").text(`${d.name} - ${d.address}`);
-  });
+    allResults.forEach((d) => {
+      resultsList.append("li").text(`${d.name} • ${d.address}`);
+    });
 }
 
 function isInCirclesIntersection(d) {
