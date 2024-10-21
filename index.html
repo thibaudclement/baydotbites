@@ -24,9 +24,10 @@
         <!-- Reviews Range Slider -->
         <div class="filter-group">
             <label>Number of Reviews:</label><br>
-            <input type="range" id="reviewsMin" min="0" max="1000" step="1" value="0">
-            <input type="range" id="reviewsMax" min="0" max="1000" step="1" value="1000">
-            <span id="reviewsValue">0 - 1000</span>
+            <span id="reviewsValue">0 - 1000</span><span> reviews</span><br>
+            <span>Min: </span><input type="range" id="reviewsMin" min="0" max="1000" step="1" value="0"><br>
+            <span>Max: </span><input type="range" id="reviewsMax" min="0" max="1000" step="1" value="1000"><br>
+            
         </div>
         <!-- Price Checkboxes -->
         <div class="filter-group">
@@ -60,12 +61,12 @@
         <div class="filter-group">
             <label>Circle A Radius:</label><br>
             <input type="range" id="radiusASlider" min="10" max="500" step="10" value="300">
-            <span id="radiusAValue">300</span>
+            <span id="radiusAValue">300</span><span> miles</span>
         </div>
         <div class="filter-group">
             <label>Circle B Radius:</label><br>
             <input type="range" id="radiusBSlider" min="10" max="500" step="10" value="300">
-            <span id="radiusBValue">300</span>
+            <span id="radiusBValue">300</span><span> miles</span>
         </div>
       </div>
       <div id="main-content">

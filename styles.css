@@ -28,7 +28,32 @@ body {
 }
 
 .filter-group {
-  margin-bottom: 15px;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #c6d8e0;
+}
+
+.filter-group label {
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.filter-group input {
+  accent-color: #394f59;
+}
+
+input[type="text"] { 
+  padding: 10px;
+  width: 100%;
+  border: 2px solid #394f59;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+input[type="text"]:focus {
+  border-color: #394f59;
+  outline: none;
 }
 
 #main-content {
