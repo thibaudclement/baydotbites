@@ -297,12 +297,33 @@ function isInCirclesIntersection(d) {
 
 function showTooltip(event, d) {
   const tooltip = d3.select("#tooltip");
+
+  // Set the image if available
+  if (d.image_url) {
+    tooltip.select("#tooltipImage")
+      .attr("src", d.image_url)
+      .style("display", "block");
+  } else {
+    tooltip.select("#tooltipImage")
+    .style("display", "none");
+  }
+
+  // Set the restaurant name
   tooltip.select("#tooltipName").text(d.name);
+
+  // Set the restaurant details
   tooltip
     .select("#tooltipInfo")
     .html(
-      `Rating: ${d.rating}<br>Reviews: ${d.review_count}<br>Price: ${d.price}`
+      `
+        Rating: ${d.rating}<br>
+        Reviews: ${d.review_count}<br>
+        Price: ${d.price}<br>
+        Categories: ${d.categories}<br>
+        Address: ${d.address}<br>
+      `
     );
+  
   tooltip.classed("hidden", false);
 }
 

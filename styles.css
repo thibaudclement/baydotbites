@@ -122,9 +122,30 @@ svg {
   text-align: left;
   padding: 10px;
   background: white;
-  border: 1px solid #ccc;
+  border: 1px solid #394f59;
+  border-radius: 10px;
   pointer-events: none;
   font-size: 12px;
+  max-width: 400px;
+  width: auto;
+}
+
+#tooltipContent {
+  display: flex;
+  align-items: flex-start;
+}
+
+#tooltipImage {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 10px;
+  border: 1px solid #c6d8e0;
+  border-radius: 50%;
+}
+
+#tooltipText {
+  flex: 1;
 }
 
 .hidden {
@@ -133,4 +154,5 @@ svg {
 
 #tooltip p {
   margin: 0;
+  line-height: 1.4;
 }
