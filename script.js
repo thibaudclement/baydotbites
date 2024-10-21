@@ -283,9 +283,55 @@ function updateVisualization() {
 
   // Update results list
   const resultsList = d3.select("#resultsList").html("");
-    allResults.forEach((d) => {
-      resultsList.append("li").text(`${d.name} • ${d.address}`);
-    });
+
+  allResults.forEach((d) => {
+    const listItem = resultsList.append("li").attr("class", "result-item");
+
+    // Create a container for each item
+    const itemContent = listItem.append("div").attr("class", "result-content");
+
+    // Add the image
+    if (d.image_url) {
+      itemContent
+        .append("img")
+        .attr("class", "result-image")
+        .attr("src", d.image_url)
+        .attr("alt", d.name);
+    } else {
+      itemContent
+        .append("img")
+        .attr("class", "result-image")
+        .attr("src", "restaurant_image_placeholder.svg")
+        .attr("alt", "Restaurant Image Placeholder");
+    }
+
+    // Add restaurant details
+    const details = itemContent.append("div").attr("class", "result-details");
+
+    details.append("h3").text(d.name);
+
+    const formattedPhoneNumber = formatPhoneNumber(d.phone);
+    
+    details.append("p").html(
+      `
+        <strong>Rating:</strong> ${d.rating}<br>
+        <strong>Reviews:</strong> ${d.review_count}<br>
+        <strong>Price:</strong> ${d.price}<br>
+        <strong>Type:</strong> ${d.categories}<br>
+        <strong>Address:</strong> ${d.address}<br>
+        <strong>Phone:</strong> ${formattedPhoneNumber}<br>
+      `
+    );
+
+    // Add the link to Yelp
+    if (d.url) {
+      details.append("a")
+        .attr("href", d.url)
+        .attr("target", "_blank")
+        .attr("class", "yelp-link")
+        .text("View on Yelp");
+    }
+  });
 }
 
 function isInCirclesIntersection(d) {
@@ -313,7 +359,7 @@ function showTooltip(event, d) {
         Rating: ${d.rating}<br>
         Reviews: ${d.review_count}<br>
         Price: ${d.price}<br>
-        Categories: ${d.categories}<br>
+        Type: ${d.categories}<br>
         Address: ${d.address}<br>
       `
     );
@@ -330,4 +376,20 @@ function moveTooltip(event) {
 
 function hideTooltip() {
   d3.select("#tooltip").classed("hidden", true);
+}
+
+function formatPhoneNumber(phoneNumberString) {
+  let cleaned = ("" + phoneNumberString).replace(/\D/g, "");
+
+  if (cleaned.length === 11 && cleaned[0] === "1") {
+    cleaned = cleaned.slice(1);
+  }
+
+  let match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+
+  if (match) {
+    return "(" + match[1] + ") " + match[2] + "-" + match[3];
+  }
+
+  return "N/A";
 }

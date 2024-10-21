@@ -92,28 +92,71 @@ svg {
   width: 948px;
   padding-bottom: 15px;
   border-bottom: 1px solid #c6d8e0;
-  margin-bottom: 25px;
 }
 
 #results h2 {
   margin-top: 0;
+  margin-bottom: 0px;
 }
 
 #resultsList {
   width: 948px;
   list-style-type: none;
   padding: 0;
+  margin-top: 0px;
+}
+
+.result-item {
+  border-bottom: 1px solid #c6d8e0;
+  padding: 35px;
+}
+
+.result-content {
+  display: flex;
+  align-items: flex-start;
+}
+
+.result-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 20px;
+  margin-top: 18px;
+  border: 1px solid #c6d8e0;
+  border-radius: 50%;
+}
+
+.result-details {
+  flex: 1;
+}
+
+.result-details  h3 {
+  margin-bottom: 5px;
+}
+
+.result-details p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.yelp-link {
+  display: inline-block;
+  margin-top: 10px;
+  text-decoration: none;
+  color: #e53935;
+  font-weight: bold;
+}
+
+.yelp-link:hover {
+  text-decoration: underline;
 }
 
 #resultsList li {
-  margin-bottom: 10px;
-  padding: 10px 20px;
-  background-color: #e3ebf0;
-  border-radius: 20px;
+  padding: 20px;
 }
 
 #resultsList li:hover {
-  background-color: #c6d8e0;
+  background-color: #e3ebf0;
 }
 
 /* Tooltip styling */
