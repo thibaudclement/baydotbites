@@ -51,7 +51,7 @@ body {
 input[type="text"] { 
   padding: 10px;
   width: 100%;
-  border: 2px solid #394f59;
+  border: 1px solid #394f59;
   border-radius: 20px;
   box-sizing: border-box;
 }
@@ -121,7 +121,6 @@ svg {
   height: 100px;
   object-fit: cover;
   margin-right: 20px;
-  margin-top: 18px;
   border: 1px solid #c6d8e0;
   border-radius: 50%;
 }
@@ -131,6 +130,7 @@ svg {
 }
 
 .result-details  h3 {
+  margin-top: 0px;
   margin-bottom: 5px;
 }
 
@@ -141,7 +141,7 @@ svg {
 
 .yelp-link {
   display: inline-block;
-  margin-top: 10px;
+  margin-top: 5px;
   text-decoration: none;
   color: #e53935;
   font-weight: bold;
@@ -171,6 +171,10 @@ svg {
   font-size: 12px;
   max-width: 400px;
   width: auto;
+}
+
+#tooltipName {
+  font-size: 16px;
 }
 
 #tooltipContent {

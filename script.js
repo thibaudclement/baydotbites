@@ -351,16 +351,20 @@ function showTooltip(event, d) {
   // Set the restaurant name
   tooltip.select("#tooltipName").text(d.name);
 
+  // Format the phone number
+  const formattedPhoneNumber = formatPhoneNumber(d.phone);
+
   // Set the restaurant details
   tooltip
     .select("#tooltipInfo")
     .html(
       `
-        Rating: ${d.rating}<br>
-        Reviews: ${d.review_count}<br>
-        Price: ${d.price}<br>
-        Type: ${d.categories}<br>
-        Address: ${d.address}<br>
+        <strong>Rating:</strong> ${d.rating}<br>
+        <strong>Reviews:</strong> ${d.review_count}<br>
+        <strong>Price:</strong> ${d.price}<br>
+        <strong>Type:</strong> ${d.categories}<br>
+        <strong>Address:</strong> ${d.address}<br>
+        <strong>Phone:</strong> ${formattedPhoneNumber}<br>
       `
     );
   
