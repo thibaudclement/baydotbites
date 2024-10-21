@@ -13,7 +13,7 @@ body {
 
 #controls {
   width: 300px;
-  padding: 20px;
+  padding: 30px;
   background-color: #e3ebf0;
   border-right: 1px solid #c6d8e0;
   overflow-y: auto;
@@ -24,7 +24,11 @@ body {
 }
 
 #logo-container {
-  padding: 25px 50px;
+  padding: 0px 50px;
+}
+
+#header-container {
+  margin-bottom: 25px;
 }
 
 .filter-group {
