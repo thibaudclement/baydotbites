@@ -298,15 +298,9 @@ function isInCirclesIntersection(d) {
 function showTooltip(event, d) {
   const tooltip = d3.select("#tooltip");
 
-  // Set the image if available
-  if (d.image_url) {
-    tooltip.select("#tooltipImage")
-      .attr("src", d.image_url)
-      .style("display", "block");
-  } else {
-    tooltip.select("#tooltipImage")
-    .style("display", "none");
-  }
+  // Set the image with a fallback
+  const imageUrl = d.image_url || "restaurant_image_placeholder.svg";
+  tooltip.select("#tooltipImage").attr("src", imageUrl);
 
   // Set the restaurant name
   tooltip.select("#tooltipName").text(d.name);
