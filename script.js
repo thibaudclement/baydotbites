@@ -78,7 +78,7 @@ function init() {
     .attr("class", "restaurant")
     .attr("cx", (d) => projection([d.longitude, d.latitude])[0])
     .attr("cy", (d) => projection([d.longitude, d.latitude])[1])
-    .attr("r", 3)
+    .attr("r", 5)
     .attr("fill", "gray")
     .attr("opacity", 0.3)
     .on("mouseover", showTooltip)
@@ -108,9 +108,9 @@ function addDraggableCircles() {
     .attr("cx", radiusA.x)
     .attr("cy", radiusA.y)
     .attr("r", radiusA.r)
-    .attr("fill", "#f4cd6e")
-    .attr("fill-opacity", 0.05)
-    .attr("stroke", "#f4cd6e")
+    .attr("fill", "#719db2")
+    .attr("fill-opacity", 0.1)
+    .attr("stroke", "#719db2")
     .call(dragBehaviorA);
 
   circleB = svg
@@ -119,9 +119,9 @@ function addDraggableCircles() {
     .attr("cx", radiusB.x)
     .attr("cy", radiusB.y)
     .attr("r", radiusB.r)
-    .attr("fill", "#f4cd6e")
-    .attr("fill-opacity", 0.05)
-    .attr("stroke", "#f4cd6e")
+    .attr("fill", "#719db2")
+    .attr("fill-opacity", 0.1)
+    .attr("stroke", "#719db2")
     .call(dragBehaviorB);
 }
 
@@ -269,7 +269,7 @@ function updateVisualization() {
       const inFilteredData = filteredData.includes(d);
       const inCirclesIntersection = isInCirclesIntersection(d);
       if (inFilteredData && inCirclesIntersection) {
-        return "firebrick";
+        return "#e53935";
       } else {
         return "gray";
       }
