@@ -62,7 +62,7 @@ function init() {
   // Add map image with fixed dimensions
   svg
     .append("image")
-    .attr("xlink:href", "https://magrawala.github.io/cs448b-fa24/assets/a3/map2024.png")
+    .attr("href", "bay_area_map.png")
     .attr("x", 0)
     .attr("y", 0)
     .attr("width", mapWidth)
