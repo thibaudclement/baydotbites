@@ -9,10 +9,7 @@ let radiusA, radiusB;
 let dragBehaviorA, dragBehaviorB;
 let circleA, circleB;
 let circlesGroup;
-
-// Coordinates for San Francisco and Stanford
-const sanFranciscoCoords = [-122.4194, 37.7749];
-const stanfordCoords = [-122.1701, 37.4277];
+let pixelsPerMile;
 
 // Load data and initialize visualization
 d3.csv(
@@ -27,6 +24,7 @@ function init() {
   // Set up projection
   const longitudeRange = [-121.781739849809, -122.50685];
   const latitudeRange = [37.22070801115405, 37.820673];
+
   const mapFrameGeoJSON = {
     type: "Feature",
     geometry: {
@@ -44,13 +42,35 @@ function init() {
     .rotate([120 + 30 / 60], 0)
     .fitSize([mapWidth, mapHeight], mapFrameGeoJSON);
 
-  // Projected positions
-  const sanFranciscoPos = projection(sanFranciscoCoords);
-  const stanfordPos = projection(stanfordCoords);
+  // Calculate pixels per mile using two known points
+  const sanFranciscoCoords = [-122.4194, 37.7749];
+  const stanfordCoords = [-122.1697, 37.4275];
+
+  const distanceMiles = calculateDistanceInMiles(sanFranciscoCoords, stanfordCoords);
+
+  const sfPixel = projection(sanFranciscoCoords);
+  const stanfordPixel = projection(stanfordCoords);
+
+  const dx = sfPixel[0] - stanfordPixel[0];
+  const dy = sfPixel[1] - stanfordPixel[1];
+  const pixelDistance = Math.sqrt(dx * dx + dy * dy);
+
+  pixelsPerMile = pixelDistance / distanceMiles;
 
   // Initialize radiusA and radiusB
-  radiusA = { x: sanFranciscoPos[0], y: sanFranciscoPos[1], r: 300 };
-  radiusB = { x: stanfordPos[0], y: stanfordPos[1], r: 300 };
+  radiusA = {
+    x: sfPixel[0],
+    y: sfPixel[1],
+    miles: 15, // Default value from slider
+    r: 15 * pixelsPerMile,
+  };
+
+  radiusB = {
+    x: stanfordPixel[0],
+    y: stanfordPixel[1],
+    miles: 15, // Default value from slider
+    r: 15 * pixelsPerMile,
+  };  
 
   // Set up SVG with fixed width and height
   svg = d3
@@ -125,20 +145,6 @@ function addDraggableCircles() {
     .call(dragBehaviorB);
 }
 
-function draggedA(event) {
-  radiusA.x = event.x;
-  radiusA.y = event.y;
-  circleA.attr("cx", radiusA.x).attr("cy", radiusA.y);
-  updateVisualization();
-}
-
-function draggedB(event) {
-  radiusB.x = event.x;
-  radiusB.y = event.y;
-  circleB.attr("cx", radiusB.x).attr("cy", radiusB.y);
-  updateVisualization();
-}
-
 function initControls() {
   // Ratings checkboxes
   d3.selectAll("input[name='rating']").on("change", updateVisualization);
@@ -159,24 +165,28 @@ function initControls() {
   // Status radio buttons
   d3.selectAll("input[name='status']").on("change", updateVisualization);
 
-  // Radii sliders
+  // Radius A Slider
   d3.select("#radiusASlider").on("input", function () {
-    radiusA.r = +this.value;
+    radiusA.miles = +this.value;
     d3.select("#radiusAValue").text(this.value);
+
+    // Convert miles to pixels
+    radiusA.r = radiusA.miles * pixelsPerMile;
     circleA.attr("r", radiusA.r);
+
     updateVisualization();
   });
 
+  // Radius B Slider
   d3.select("#radiusBSlider").on("input", function () {
-    radiusB.r = +this.value;
+    radiusB.miles = +this.value;
     d3.select("#radiusBValue").text(this.value);
+
+    radiusB.r = radiusB.miles * pixelsPerMile;
     circleB.attr("r", radiusB.r);
+
     updateVisualization();
   });
-
-  // Set initial radius values
-  d3.select("#radiusAValue").text(radiusA.r);
-  d3.select("#radiusBValue").text(radiusB.r);
 }
 
 function updateVisualization() {
@@ -185,17 +195,22 @@ function updateVisualization() {
     .selectAll("input[name='rating']:checked")
     .nodes()
     .map((d) => d.value);
+
   const reviewsMin = parseInt(d3.select("#reviewsMin").property("value"));
   const reviewsMax = parseInt(d3.select("#reviewsMax").property("value"));
+
   const priceValues = d3
     .selectAll("input[name='price']:checked")
     .nodes()
     .map((d) => d.value);
+
   const searchTerm = d3.select("#searchBox").property("value").toLowerCase();
+
   const transactionValues = d3
     .selectAll("input[name='transaction']:checked")
     .nodes()
     .map((d) => d.value);
+
   const statusValue = d3.select("input[name='status']:checked").property("value");
 
   // Update display of reviews range
@@ -262,6 +277,10 @@ function updateVisualization() {
     return true;
   });
 
+  // Update draggable circles positions if necessary
+  circleA.attr("cx", radiusA.x).attr("cy", radiusA.y).attr("r", radiusA.r);
+  circleB.attr("cx", radiusB.x).attr("cy", radiusB.y).attr("r", radiusB.r);
+
   // Update circles
   circlesGroup
     .selectAll("circle.restaurant")
@@ -275,7 +294,7 @@ function updateVisualization() {
       }
     });
 
-  // Get all results that are in the circles' intersection
+  // Get all results that are in the draggable circles' intersection
   const allResults = filteredData.filter(isInCirclesIntersection);
 
   // Update results heading with the count
@@ -334,11 +353,43 @@ function updateVisualization() {
   });
 }
 
+function draggedA(event) {
+  radiusA.x = event.x;
+  radiusA.y = event.y;
+  circleA.attr("cx", radiusA.x).attr("cy", radiusA.y);
+
+  updateVisualization();
+}
+
+function draggedB(event) {
+  radiusB.x = event.x;
+  radiusB.y = event.y;
+  circleB.attr("cx", radiusB.x).attr("cy", radiusB.y);
+
+  updateVisualization();
+}
+
 function isInCirclesIntersection(d) {
-  const [x, y] = projection([d.longitude, d.latitude]);
-  const distA = Math.hypot(x - radiusA.x, y - radiusA.y);
-  const distB = Math.hypot(x - radiusB.x, y - radiusB.y);
-  return distA <= radiusA.r && distB <= radiusB.r;
+  const restaurantPixel = projection([d.longitude, d.latitude]);
+
+  // Distance to draggable circle A
+  const dxA = restaurantPixel[0] - radiusA.x;
+  const dyA = restaurantPixel[1] - radiusA.y;
+  const distanceToA = Math.sqrt(dxA * dxA + dyA * dyA);
+
+  // Distance to draggable circle B
+  const dxB = restaurantPixel[0] - radiusB.x;
+  const dyB = restaurantPixel[1] - radiusB.y;
+  const distanceToB = Math.sqrt(dxB * dxB + dyB * dyB);
+
+  return distanceToA <= radiusA.r && distanceToB <= radiusB.r;
+}
+
+// Function to calculate distance in miles between two coordinates
+function calculateDistanceInMiles(point1, point2) {
+  const distanceInRadians = d3.geoDistance(point1, point2);
+  const earthRadiusMiles = 3958.8; // Earth's radius in miles
+  return distanceInRadians * earthRadiusMiles;
 }
 
 function showTooltip(event, d) {
