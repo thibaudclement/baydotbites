@@ -82,6 +82,63 @@ svg {
   display: block;
 }
 
+.restaurant {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.restaurant:hover {
+  stroke: #e53935;
+  stroke-width: 5px;
+  stroke-opacity: 1;
+}
+
+/* Tooltip styling */
+#tooltip {
+  position: absolute;
+  text-align: left;
+  padding: 10px;
+  background: white;
+  border: 1px solid #394f59;
+  border-radius: 10px;
+  pointer-events: none;
+  font-size: 12px;
+  max-width: 400px;
+  width: auto;
+}
+
+#tooltipName {
+  font-size: 16px;
+}
+
+#tooltipContent {
+  display: flex;
+  align-items: flex-start;
+}
+
+#tooltipImage {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 10px;
+  border: 1px solid #c6d8e0;
+  border-radius: 50%;
+}
+
+#tooltipText {
+  flex: 1;
+}
+
+.hidden {
+  display: none;
+}
+
+#tooltip p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+
 #results {
   padding: 30px;
   border-top: 1px solid #c6d8e0;
@@ -157,49 +214,4 @@ svg {
 
 #resultsList li:hover {
   background-color: #e3ebf0;
-}
-
-/* Tooltip styling */
-#tooltip {
-  position: absolute;
-  text-align: left;
-  padding: 10px;
-  background: white;
-  border: 1px solid #394f59;
-  border-radius: 10px;
-  pointer-events: none;
-  font-size: 12px;
-  max-width: 400px;
-  width: auto;
-}
-
-#tooltipName {
-  font-size: 16px;
-}
-
-#tooltipContent {
-  display: flex;
-  align-items: flex-start;
-}
-
-#tooltipImage {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  margin-right: 10px;
-  border: 1px solid #c6d8e0;
-  border-radius: 50%;
-}
-
-#tooltipText {
-  flex: 1;
-}
-
-.hidden {
-  display: none;
-}
-
-#tooltip p {
-  margin: 0;
-  line-height: 1.4;
 }

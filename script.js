@@ -103,7 +103,12 @@ function init() {
     .attr("opacity", 0.3)
     .on("mouseover", showTooltip)
     .on("mousemove", moveTooltip)
-    .on("mouseout", hideTooltip);
+    .on("mouseout", hideTooltip)
+    .on("click", function (event, d) {
+      if (d.url) {
+        window.open(d.url, "_blank");
+      }
+    });
 
   // Add draggable circles A and B
   addDraggableCircles();
