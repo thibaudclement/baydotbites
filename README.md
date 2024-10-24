@@ -1,50 +1,48 @@
 # BayDotBites
 
-[BayDotBites](https://www.baydotbites.com/) is an online, interactive visualization of Bay Area restaurants. This project is developed by Thibaud Clement as part of Assignment 3 of Stanford's CS448B course.
+[BayDotBites](https://www.baydotbites.com/) is an online, interactive visualization of Bay Area restaurants, developed by Thibaud Clement as part of Stanford's CS448B course (Assignment 3).
 
 ## Concept
-The name BayDotBites aims a representing the goal of this project, combining references to the Bay Area ("Bay"), visualization ("dot"), and restaurants ("bites"). It is also a pun on "bytes" and on TLDs (as if `.bites` were a domain), to echo the online nature of the project—in fact, it is available at `https://www.baydotbites.com/`.
+The name 'BayDotBites' captures the core goals of this project, combining references to the Bay Area ("Bay"), visualization ("dot"), and dining ("bites"). It also playfully nods to "bytes" and top-level domains (as if `.bites` were an actual TLD), highlighting the online nature of the project, which is accessible at `https://www.baydotbites.com/`.
 
-The logo builds on this thematic, with the Golden Gate bridge representing the Bay Area in the center, a "bitten" sun representing the idea of eating, and bay water made of dots in reference to a scatter plot.
+The logo reinforces this theme, featuring the Golden Gate Bridge to represent the Bay Area, a "bitten" sun symbolizing eating, and dots for the bay water to reference a scatter plot.
 
 ## User Interface
 
-The most prominent part of the website, on the right, displays the provided map, on which restaurants appear as circles, either red if they belong to the selection of the user, or grey if they do not. The user can hover over each circle to reveal a tooltip presenting details about each restaurant, and click on the circle to access the listing of the restaurant on Yelp.
+The main section of the website, located on the right, displays a map with restaurants marked as circles—red if they match the user’s filters, gray if they do not. Users can hover over each circle to reveal a tooltip with restaurant details and click on a circle to visit the restaurant’s Yelp listing.
 
-Restaurants may be filtered based on location, by way of two draggable circles—one centered on San Francisco, the other on Stanford—with independently-adjustable radii, as well as based the text content of thei name, address, and category, their average rating, the number of reviews they received, their price range, the type of transactions they accept, and whether they are open.  
+Restaurants can be filtered based on location using two draggable circles—one centered on San Francisco and the other on Stanford—each with independently adjustable radii. Additional filters include search by restaurant name, address, and category; average rating; number of reviews; price range; transaction types accepted; and whether the restaurant is currently open.
 
-A scrollable list of the filtered-in restaurants is presented below the map, while all filtering controls appear in the left-sidebar of the website.
+Below the map is a scrollable list showing the filtered restaurant results, while all filtering controls are located in the left sidebar.
 
-This is what a user may see by default when loading the website:
-
-[BayDotBites Default View](/baydotbites_default_view.png)
+Here’s the default view that users encounter when loading the website: [BayDotBites Default View](/baydotbites_default_view.png)
 
 ## Platform Choice
-Initially, I started working on this project in Observable. While I was able to get up and running quickly, displaying restaurant circles on the map without difficulty, the more progress I made on the assignment, the more I ran into technical challenges. In particular, once I attempted to implement data filters, it seemed like Observable may not be the best tool to create the user interface I had in mind. 
+The project initially began in Observable, which enabled quick progress in displaying restaurant circles on the map. However, as the project evolved, it became apparent that implementing data filters in Observable the way I intended to presented some technical challenges. 
 
-Therefore, I decided to start again from scratch, this time building a custom static site with HTML, SVG, CSS, and JavaScript, hosted via GitHub Pages. In hindsight, despite a steeper learning curve, this appears to have been an appropriate decision, as the additional flexibility of this approach allowed to design the visualization I had in mind.
+Consequently, I restarted from scratch, creating a custom static site using HTML, SVG, CSS, and JavaScript, and hosting it via GitHub Pages. Despite the steeper learning curve, this decision provided the necessary flexibility to create the envisioned user interface.
 
 ## Development Process
-This project took about 45 hours to complete. I opted to work on this project on my own, without a partner. Below is a breakdown of how my time was allocated:
-- First, I spent 2 hours building a mental model of what needed to be achieved in this project, understanding the dataset, and hand-sketching a wireframe of what the final product may look like.
-- Then, I spent about 5 hours reading D3 documentation, focusing in particular on [d3-drag](https://d3js.org/d3-drag), and researching solutions to implement [tooltips](https://observablehq.com/@john-guerra/how-to-add-a-tooltip-in-d3).
-- Next, I spent around 5 hours building a prototype in Observable, until I decided to switch to a custom website.
-- Once I pivoted to GitHub Pages, it took me around 3 hours to buy the domain name, initialize the GitHub repository, and set up GitHub pages to point to a custom domain.
-- From there, implementing a functional version of the website, with restaurants displayed on the map, working filtering controls, and a pleasant user interface, took about 15 hours.
-- However, I then discovered an issue with the way I had set up the draggable circles, where the radii of the circles on the map were not commensurate with the value selected by the sliders. It took me almost half as much time to understand and resolve this problem, as the previous step, i.e. around 8 hours. Indeed, this required using a fixed conversion factor to convert miles to pixels, comparing  pixel distances to determine whether each restaurant was within the intersection of the draggable circles, and ensuring the restaurant highlighting matched the visual representation on the map.
-- Next, I dedicated about 5 hours to adding the final touch to the website, testing some edge cases (such as restaurants with large number of reviews) and refining the user interface.
-- Finally, I spent a couple of hours drafting the contents of this README file.
+The project required approximately 45 hours to complete, broken down as follows:
+- Initial Planning (2 hours): Developed a mental model of project requirements, explored the dataset, and sketched a wireframe of the final product.
+- Research & Prototyping (5 hours): Read through D3 documentation, focusing on d3-drag and researched tooltip implementation methods.
+- Observable Prototype (5 hours): Created a prototype before transitioning to a custom website.
+- GitHub Pages Setup (3 hours): Purchased a domain name, initialized the GitHub repository, and configured GitHub Pages to use the custom domain.
+- Website Implementation (15 hours): Developed a functional version of the website, including restaurant mapping, filtering controls, and user-friendly interface.
+- Debugging (8 hours): Resolved issues with draggable circles, ensuring that radii corresponded accurately with slider values. This process involved converting miles to pixels, calculating pixel distances to identify restaurants within the draggable circles’ intersection, and synchronizing restaurant highlighting with the visual map.
+- Final Touches (5 hours): Polished the user interface, tested edge cases (e.g. restaurants with a high number of reviews), and made final adjustments.
+- README Drafting (2 hours): Composed the content for this README file.
 
 ## Visualization Decisions
-Here are some of the design decisions made in the process of creating this visualization:
-- Map: I elected to keep the dimensions suggested in the starter code (rather than using the actual dimensions of the image), to ofer a reasonable experience on laptop screens. After experimenting with color replacement in the source image, I eventually decided to use the original version provided. The only change I made was to apply a gradient on the right-hand side of the image, to make it fade-out into the background of the website, instead of appearing truncated.
-- Restaurant circles: I opted to use red to color restaurant circles that were filtered by the user, as a way to make them stand out. While I started with smaller circles (2 and 3 pixels of radius) to reduce overlaps, I eventually scaled them up (5 pixels) and applied an opacity of 30%, hence making denser areas naturally appear denser on the map. 
-- Draggable circles: I experimented with different colors (including the same yellow as the sun in the logo of the website), and chose an anthracite tone, which works well with the background colors of the map, as well as the red and grey colors of the restaurant circles. Opacity was set as low as possible, and a stroke was added to accentuate the boundaries of the circles. To make sure the draggable circles did not make restaurant circles less visible, I brought restaurant circles to the forefront with `circlesGroup.raise();`.
-- Filters: All filters were set up to cover the entire ranges of the data set (for instance, the reviews count sliders go up to 15,000 because the restaurant with the most reviews has over 12,000 reviews), and default values were set as to maximize the number of results, hence allowing the user to narrow down their selection (rather than expand it up).
+Some of the design decisions made in the process of creating this visualization included:
+- Map: I maintained the dimensions suggested in the starter code for better compatibility with laptop screens. After testing different color replacements in the source image, I chose to keep the original version, adding a gradient on the right side to blend seamlessly with the website background rather than appearing truncated.
+- Restaurant Circles: I used red to highlight filtered restaurants, making them more noticeable. Initially, I used smaller circles (2-3 pixels in radius) to reduce overlaps, but eventually increased the size to 5 pixels with 30% opacity, making denser areas more prominent.
+- Draggable Circles: I tested various colors, including the logo’s sun yellow, before settling on an anthracite tone that contrasts well with both the map and the red/gray restaurant circles. I set the opacity low and added a stroke to define the boundaries. To ensure the draggable circles did not obscure restaurant circles, I used `circlesGroup.raise();` to bring restaurant circles to the forefront.
+- Filters: All filters were designed to encompass the full data range (e.g. the review count slider goes up to 15,000, as the restaurant with the most reviews has over 12,000). The default filter settings maximize the number of results, allowing users to refine their selections rather than expand them.
 
 ## Future Developments
-Here are some ideas to keep improving this project:
-1. Given the number of data points in the dataset, spread across a small geographic area, some parts of the map appear really crowded, which makes it sometimes difficult to distinguish between restaurant locations. One solution would be to use a dynamic map that allows the user to zoom in on the areas they are most interested in.
-2. One idea that would improve the user experience would be to connect the map and the results list, so that hovering a restaurant in one part highlights it on the other. For instance, when the user hovers over a restaurant on the map, it would be nice to see that restaurant highlighted in the results list, and when the user hovers over a restaurant in the results list, it would be nice to display its tooltip on the map.
-3. This visualization is set up to use a static dataset, which was exported via the Yelp A visualization plugged into the Yelp Fusion API in early October 2024. Integrating this project with the Yelp Fusion API would enable real-time updates of the restaurants displayed on the website.
-4. This static website has been developed with laptop and desktop browsers in mind. To offer a better experience on smartphone, it would be necessary to make the layout responsive, and most importantly, to rethink user interactions with the map, given that mouse hover is not available on mobile.
+Here are some potential improvements for the project:
+1. Dynamic Map: Implementing a zoomable, interactive map would help alleviate crowding and make restaurant locations easier to distinguish.
+2. Linked Map & List: Enhancing the connection between the map and the results list—such as highlighting corresponding items when hovering over either—would improve the user experience.
+3. Real-Time Data Integration: Connecting the project to the Yelp Fusion API would enable real-time updates of displayed restaurants, rather than relying on a static dataset.
+4. Mobile-Friendliness: Adapting the layout for mobile devices, along with rethinking user interactions for touchscreen interfaces, would improve the experience on smartphones, where mouse hovering is unavailable.
