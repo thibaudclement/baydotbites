@@ -1,19 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Metadata -->
     <meta charset="UTF-8">
-    <title>BayDotBites — Bay Area Restaurants Visualization</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BayDotBites • Bay Area Restaurants Visualization</title>
+    <meta name="description" content="Explore the Bay Area's food scene with the BayDotBites interactive map.">
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.svg">
+    <meta property="og:title" content="BayDotBites • Bay Area Restaurants Visualization">
+    <meta property="og:description" content="Explore the Bay Area's food scene with the BayDotBites interactive map.">
+    <meta property="og:image" content="baydotbites_logo.svg">
+    <meta property="og:url" content="https://www.baydotbites.com/">
 </head>
 <body>
     <div id="container">
+      <!-- Sidebar -->
       <div id="controls">
         <div id="logo-container">
           <img src="baydotbites_logo.svg" alt="BayDotBites Logo" id="logo">
         </div>
         <div id="header-container">
           <h1>BayDotBites</h1>
-          <p>Explore the Bay Area's diverse restaurant scene with this interactive map.</p>
+          <p>Explore the Bay Area's food scene with this interactive visualization.
+            Hover over the map to see restaurant details and click to visit their Yelp pages. 
+            Drag the blue circles to highlight specific areas, and use the filters to refine your results. 
+            Matching restaurants appear below the map.</p>
         </div>
         <h2>Filters</h2>
         <!-- Search Box -->
@@ -47,7 +59,6 @@
             <span id="reviewsValue">0 - 15000</span><span> reviews</span><br>
             <span>Min: </span><input type="range" id="reviewsMin" min="0" max="15000" step="500" value="0"><br>
             <span>Max: </span><input type="range" id="reviewsMax" min="0" max="15000" step="500" value="15000"><br>
-            
         </div>
         <!-- Price Checkboxes -->
         <div class="filter-group">
@@ -73,10 +84,12 @@
             <input type="radio" name="status" value="closed"> Closed<br>
         </div>
       </div>
+      <!-- Main Content -->
       <div id="main-content">
           <div id="map-container">
               <!-- Map will be injected here -->
           </div>
+          <!-- Results List -->
           <div id="results">
               <h2 id="resultsHeading">Restaurants</h2>
               <ul id="resultsList"></ul>

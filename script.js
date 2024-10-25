@@ -20,6 +20,7 @@ d3.csv(
   init();
 });
 
+// Initialize visualization
 function init() {
   // Set up projection
   const longitudeRange = [-121.781739849809, -122.50685];
@@ -45,16 +46,12 @@ function init() {
   // Calculate pixels per mile using two known points
   const sanFranciscoCoords = [-122.4194, 37.7749];
   const stanfordCoords = [-122.1697, 37.4275];
-
   const distanceMiles = calculateDistanceInMiles(sanFranciscoCoords, stanfordCoords);
-
   const sfPixel = projection(sanFranciscoCoords);
   const stanfordPixel = projection(stanfordCoords);
-
   const dx = sfPixel[0] - stanfordPixel[0];
   const dy = sfPixel[1] - stanfordPixel[1];
   const pixelDistance = Math.sqrt(dx * dx + dy * dy);
-
   pixelsPerMile = pixelDistance / distanceMiles;
 
   // Initialize radiusA and radiusB
@@ -123,6 +120,7 @@ function init() {
   updateVisualization();
 }
 
+// Add draggable circles A and B
 function addDraggableCircles() {
   dragBehaviorA = d3.drag().on("drag", draggedA);
   dragBehaviorB = d3.drag().on("drag", draggedB);
@@ -150,6 +148,7 @@ function addDraggableCircles() {
     .call(dragBehaviorB);
 }
 
+// Initialize UI controls
 function initControls() {
   // Ratings checkboxes
   d3.selectAll("input[name='rating']").on("change", updateVisualization);
@@ -187,6 +186,7 @@ function initControls() {
     radiusB.miles = +this.value;
     d3.select("#radiusBValue").text(this.value);
 
+    // Convert miles to pixels
     radiusB.r = radiusB.miles * pixelsPerMile;
     circleB.attr("r", radiusB.r);
 
@@ -194,6 +194,7 @@ function initControls() {
   });
 }
 
+// Update visualization based on filters
 function updateVisualization() {
   // Get filter values
   const ratingValues = d3
@@ -265,7 +266,7 @@ function updateVisualization() {
           return false;
         }
       } else {
-        return false; // Exclude if no transactions data
+        return false;
       }
     }
 
@@ -286,7 +287,7 @@ function updateVisualization() {
   circleA.attr("cx", radiusA.x).attr("cy", radiusA.y).attr("r", radiusA.r);
   circleB.attr("cx", radiusB.x).attr("cy", radiusB.y).attr("r", radiusB.r);
 
-  // Update circles
+  // Update restaurant circles
   circlesGroup
     .selectAll("circle.restaurant")
     .attr("fill", (d) => {
@@ -302,7 +303,7 @@ function updateVisualization() {
   // Get all results that are in the draggable circles' intersection
   const allResults = filteredData.filter(isInCirclesIntersection);
 
-  // Update results heading with the count
+  // Update results heading with restaurant count
   d3.select("#resultsHeading").text(`${allResults.length} Restaurants`);
 
   // Update results list
@@ -314,7 +315,7 @@ function updateVisualization() {
     // Create a container for each item
     const itemContent = listItem.append("div").attr("class", "result-content");
 
-    // Add the image
+    // Add restaurant image from dataset
     if (d.image_url) {
       itemContent
         .append("img")
@@ -329,7 +330,7 @@ function updateVisualization() {
         .attr("alt", "Restaurant Image Placeholder");
     }
 
-    // Add restaurant details
+    // Add restaurant details from dataset
     const details = itemContent.append("div").attr("class", "result-details");
 
     details.append("h3").text(d.name);
@@ -347,7 +348,7 @@ function updateVisualization() {
       `
     );
 
-    // Add the link to Yelp
+    // Add link to Yelp
     if (d.url) {
       details.append("a")
         .attr("href", d.url)
@@ -358,6 +359,7 @@ function updateVisualization() {
   });
 }
 
+// Drag function for circle A
 function draggedA(event) {
   radiusA.x = event.x;
   radiusA.y = event.y;
@@ -366,6 +368,7 @@ function draggedA(event) {
   updateVisualization();
 }
 
+// Drag function for circle B
 function draggedB(event) {
   radiusB.x = event.x;
   radiusB.y = event.y;
@@ -373,6 +376,7 @@ function draggedB(event) {
 
   updateVisualization();
 }
+
 
 function isInCirclesIntersection(d) {
   const restaurantPixel = projection([d.longitude, d.latitude]);
@@ -397,6 +401,7 @@ function calculateDistanceInMiles(point1, point2) {
   return distanceInRadians * earthRadiusMiles;
 }
 
+// Function to show tooltips
 function showTooltip(event, d) {
   const tooltip = d3.select("#tooltip");
 
@@ -427,6 +432,7 @@ function showTooltip(event, d) {
   tooltip.classed("hidden", false);
 }
 
+// Function to move tooltips
 function moveTooltip(event) {
   const tooltip = d3.select("#tooltip");
   tooltip
@@ -434,10 +440,12 @@ function moveTooltip(event) {
     .style("top", event.pageY + 15 + "px");
 }
 
+// Function to hide tooltips
 function hideTooltip() {
   d3.select("#tooltip").classed("hidden", true);
 }
 
+// Function to translate phone numbers from string to US format
 function formatPhoneNumber(phoneNumberString) {
   let cleaned = ("" + phoneNumberString).replace(/\D/g, "");
 
