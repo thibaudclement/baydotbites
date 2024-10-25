@@ -79,7 +79,7 @@ function init() {
   // Add map image with fixed dimensions
   svg
     .append("image")
-    .attr("href", "bay_area_map.png")
+    .attr("href", "assets/bay_area_map.png")
     .attr("x", 0)
     .attr("y", 0)
     .attr("width", mapWidth)
@@ -326,7 +326,7 @@ function updateVisualization() {
       itemContent
         .append("img")
         .attr("class", "result-image")
-        .attr("src", "restaurant_image_placeholder.svg")
+        .attr("src", "assets/restaurant_image_placeholder.svg")
         .attr("alt", "Restaurant Image Placeholder");
     }
 
@@ -406,7 +406,7 @@ function showTooltip(event, d) {
   const tooltip = d3.select("#tooltip");
 
   // Set the image with a fallback
-  const imageUrl = d.image_url || "restaurant_image_placeholder.svg";
+  const imageUrl = d.image_url || "assets/restaurant_image_placeholder.svg";
   tooltip.select("#tooltipImage").attr("src", imageUrl);
 
   // Set the restaurant name

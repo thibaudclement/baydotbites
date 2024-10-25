@@ -15,7 +15,7 @@ Restaurants can be filtered based on location using two draggable circles—one 
 
 Below the map is a scrollable list showing the filtered restaurant results, while all filtering controls are located in the left sidebar.
 
-Here’s the default view that users encounter when loading the website: [BayDotBites Default View](/baydotbites_default_view.png)
+Here’s the default view that users encounter when loading the website: [BayDotBites Default View](assets/baydotbites_default_view.png)
 
 ## Platform Choice
 The project initially began in Observable, which enabled quick progress in displaying restaurant circles on the map. However, as the project evolved, it became apparent that implementing data filters in Observable the way I intended to presented some technical challenges. 
